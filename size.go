@@ -2,9 +2,14 @@ package unit
 
 import (
 	"fmt"
+	"regexp"
+	"strconv"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
+// Unit constants.
 const (
 	B = 1 << (10 * iota)
 	KB
@@ -12,8 +17,9 @@ const (
 	GB
 	TB
 	PB
-	EB
 )
+
+var pattern = regexp.MustCompile(`(?i)^(-?\d+(?:\.\d+)?)\s*([KMGTPE]B?|B)?$`)
 
 // Size represents integer size.
 type Size uint64
@@ -37,9 +43,6 @@ func (s Size) format(humanize bool) string {
 	unit := ""
 
 	switch {
-	case s >= EB:
-		f = float32(s) / EB
-		unit = "EB"
 	case s >= PB:
 		f = float32(s) / PB
 		unit = "PB"
@@ -67,4 +70,53 @@ func (s Size) format(humanize bool) string {
 	}
 
 	return sf + unit
+}
+
+// ToSize converts string Size. Supported formats:
+//  - 15
+//  - 20 KB
+//  - 30 M
+//  - 40M
+func ToSize(s string) (Size, error) {
+	parts := pattern.FindStringSubmatch(strings.TrimSpace(s))
+
+	if len(parts) < 3 {
+		return Size(0), errors.Errorf("invalid size format: %s", s)
+	}
+
+	f, err := strconv.ParseFloat(parts[1], 64)
+
+	if err != nil {
+		return Size(0), errors.Wrapf(err, "invalid size format: %s", s)
+	}
+
+	if f < 0 {
+		return Size(0), errors.Errorf("negative size: %s", s)
+	}
+
+	var bytes uint64
+	unit := strings.ToUpper(parts[2])
+
+	if unit == "" {
+		return Size(uint64(f)), nil
+	}
+
+	switch unit[:1] {
+	case "B":
+		bytes = uint64(f)
+	case "K":
+		bytes = uint64(f * KB)
+	case "M":
+		bytes = uint64(f * KB)
+	case "G":
+		bytes = uint64(f * GB)
+	case "T":
+		bytes = uint64(f * TB)
+	case "P":
+		bytes = uint64(f * PB)
+	default:
+		bytes = uint64(f)
+	}
+
+	return Size(bytes), nil
 }

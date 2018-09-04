@@ -1,6 +1,8 @@
 package unit
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestSize_Humanize(t *testing.T) {
 	tests := []struct {
@@ -15,7 +17,6 @@ func TestSize_Humanize(t *testing.T) {
 		{"gigabytes", Size(3 * GB), "3 GB"},
 		{"terabytes", Size(4 * TB), "4 TB"},
 		{"petabytes", Size(5 * PB), "5 PB"},
-		{"exabytes", Size(6 * EB), "6 EB"},
 		{"fractional", Size(1600 * B), "1.6 KB"},
 	}
 
@@ -23,6 +24,42 @@ func TestSize_Humanize(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := tt.s.Humanize(); got != tt.want {
 				t.Errorf("Size.Humanize() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestToSize(t *testing.T) {
+	tests := []struct {
+		name    string
+		str     string
+		want    Size
+		wantErr bool
+	}{
+		{"default", "0", Size(0), false},
+		{"bytes-default", "10", Size(10), false},
+		{"bytes", "10B", Size(10), false},
+		{"kilobytes", "10K", Size(10 * KB), false},
+		{"megabytes", "20MB", Size(20 * KB), false},
+		{"gigabytes", "30 G", Size(30 * GB), false},
+		{"terabytes", "40 TB", Size(40 * TB), false},
+		{"petabytes", "50  PB", Size(50 * PB), false},
+		{"negative", "-20M", Size(0), true},
+		{"invalid", "inv M", Size(0), true},
+		{"fractional", "1.5 M", Size(1536), false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := ToSize(tt.str)
+
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ToSize() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			if got != tt.want {
+				t.Errorf("ToSize() = %v, want %v", got, tt.want)
 			}
 		})
 	}
