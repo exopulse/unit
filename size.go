@@ -78,30 +78,19 @@ func (s Size) format(humanize bool) string {
 //  - 30 M
 //  - 40M
 func ToSize(s string) (Size, error) {
-	parts := pattern.FindStringSubmatch(strings.TrimSpace(s))
-
-	if len(parts) < 3 {
-		return Size(0), errors.Errorf("invalid size format: %s", s)
-	}
-
-	f, err := strconv.ParseFloat(parts[1], 64)
+	f, unit, err := parseSize(s)
 
 	if err != nil {
-		return Size(0), errors.Wrapf(err, "invalid size format: %s", s)
+		return Size(0), err
 	}
-
-	if f < 0 {
-		return Size(0), errors.Errorf("negative size: %s", s)
-	}
-
-	var bytes uint64
-	unit := strings.ToUpper(parts[2])
 
 	if unit == "" {
 		return Size(uint64(f)), nil
 	}
 
-	switch unit[:1] {
+	var bytes uint64
+
+	switch unit {
 	case "B":
 		bytes = uint64(f)
 	case "K":
@@ -119,4 +108,30 @@ func ToSize(s string) (Size, error) {
 	}
 
 	return Size(bytes), nil
+}
+
+func parseSize(s string) (float64, string, error) {
+	parts := pattern.FindStringSubmatch(strings.TrimSpace(s))
+
+	if len(parts) < 3 {
+		return 0, "", errors.Errorf("invalid size format: %s", s)
+	}
+
+	f, err := strconv.ParseFloat(parts[1], 64)
+
+	if err != nil {
+		return 0, "", errors.Wrapf(err, "invalid size format: %s", s)
+	}
+
+	if f < 0 {
+		return 0, "", errors.Errorf("negative size: %s", s)
+	}
+
+	unit := strings.ToUpper(parts[2])
+
+	if len(unit) > 1 {
+		unit = unit[:1]
+	}
+
+	return f, unit, nil
 }
