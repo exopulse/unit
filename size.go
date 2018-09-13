@@ -25,7 +25,7 @@ var pattern = regexp.MustCompile(`(?i)^(-?\d+(?:\.\d+)?)\s*([KMGTPE]B?|B)?$`)
 
 // Size is a type wrapper around uint64 providing parsing/formatting methods for size expressions.
 // Use ParseSize() to create a Size object from string:
-//   s, err := ParseSize(tt.str)
+//   s, err := ParseSize("120 MB")
 // Use type cast to create a Size object from integer:
 //   s := Size(1024)
 // Use String() method to render size in "unit" format (no space between value and unit).
