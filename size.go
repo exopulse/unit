@@ -1,4 +1,4 @@
-// Package unit contains type wrappers for common units like size. Conversion from and to human readable formats are
+// Package unit contains type wrappers for common units like size. Conversions from and to human readable formats are
 // supported.
 package unit
 

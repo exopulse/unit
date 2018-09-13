@@ -1,11 +1,11 @@
 # exopulse unit package
-Golang package unit contains type wrappers for common units like size. Conversion from and to human readable formats are supported.
+Golang package unit contains type wrappers for common units like size. Conversions from and to human readable formats are supported.
 
 [![CircleCI](https://circleci.com/gh/exopulse/unit.svg?style=svg)](https://circleci.com/gh/exopulse/unit)
 
 # Overview
 
-This package contains type wrappers for common units like size. Conversion from and to human readable formats are supported.
+This package contains type wrappers for common units like size. Conversions from and to human readable formats are supported.
 
 ## Features
 
@@ -64,5 +64,5 @@ fmt.Println(s.String())
 
 ## License
 
-Net package is released under the MIT license. See
+Unit package is released under the MIT license. See
 [LICENSE](https://github.com/exopulse/unit/blob/master/LICENSE)
