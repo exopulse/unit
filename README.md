@@ -2,6 +2,7 @@
 Golang package unit contains type wrappers for common units like size. Conversions from and to human readable formats are supported.
 
 [![CircleCI](https://circleci.com/gh/exopulse/unit.svg?style=svg)](https://circleci.com/gh/exopulse/unit)
+[![GitHub license](https://img.shields.io/github/license/exopulse/unit.svg)](https://github.com/exopulse/unit/blob/master/LICENSE)
 
 # Overview
 
