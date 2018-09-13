@@ -72,7 +72,7 @@ func (s Size) format(humanize bool) string {
 	return sf + unit
 }
 
-// ToSize converts string Size. Supported formats:
+// ToSize converts string to Size. Supported formats:
 //  - 15
 //  - 20 KB
 //  - 30 M
