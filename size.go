@@ -23,7 +23,13 @@ const (
 
 var pattern = regexp.MustCompile(`(?i)^(-?\d+(?:\.\d+)?)\s*([KMGTPE]B?|B)?$`)
 
-// Size represents integer size.
+// Size is a type wrapper around uint64 providing parsing/formatting methods for size expressions.
+// Use ParseSize() to create a Size object from string:
+//   s, err := ParseSize(tt.str)
+// Use type cast to create a Size object from integer:
+//   s := Size(1024)
+// Use String() method to render size in "unit" format (no space between value and unit).
+// Use Humanize() method to render size in "human" format (space inserted between value and unit).
 type Size uint64
 
 // String returns "unit" presentation (value immediately followed by unit).
@@ -79,6 +85,7 @@ func (s Size) format(humanize bool) string {
 //  - 20 KB
 //  - 30 M
 //  - 40M
+//  - 1.5 GB
 func ParseSize(s string) (Size, error) {
 	f, unit, err := parseSize(s)
 
