@@ -74,12 +74,12 @@ func (s Size) format(humanize bool) string {
 	return sf + unit
 }
 
-// ToSize converts string to Size. Supported formats:
+// ParseSize converts string to Size. Supported formats:
 //  - 15
 //  - 20 KB
 //  - 30 M
 //  - 40M
-func ToSize(s string) (Size, error) {
+func ParseSize(s string) (Size, error) {
 	f, unit, err := parseSize(s)
 
 	if err != nil {

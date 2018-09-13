@@ -54,7 +54,7 @@ func TestSize_String(t *testing.T) {
 	}
 }
 
-func TestSize_ToSize(t *testing.T) {
+func TestSize_ParseSize(t *testing.T) {
 	tests := []struct {
 		name    string
 		str     string
@@ -76,15 +76,15 @@ func TestSize_ToSize(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := ToSize(tt.str)
+			got, err := ParseSize(tt.str)
 
 			if (err != nil) != tt.wantErr {
-				t.Errorf("ToSize() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ParseSize() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
 			if got != tt.want {
-				t.Errorf("ToSize() = %v, want %v", got, tt.want)
+				t.Errorf("ParseSize() = %v, want %v", got, tt.want)
 			}
 		})
 	}
