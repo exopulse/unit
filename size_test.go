@@ -89,3 +89,11 @@ func TestSize_ToSize(t *testing.T) {
 		})
 	}
 }
+
+func TestSize_ConversionInt(t *testing.T) {
+	s := Size(1024)
+
+	if int(s) != 1024 {
+		t.Error("conversion failed")
+	}
+}
