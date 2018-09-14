@@ -53,7 +53,7 @@ fmt.Println(s.String())
 
 ## Use Humanize() method to render size in "human" format (space inserted between value and unit)
 ```go
-fmt.Println(s.String())
+fmt.Println(s.Humanize())
 ```
  1024 MB
 
